@@ -1,0 +1,46 @@
+<component name="org.pensco.conversions">
+
+  <!-- Please, do not format this file to nuxeo formating convention. On Windows, 
+    for example, we can't have line breaks in the command -->
+
+  <extension target="org.nuxeo.ecm.core.convert.service.ConversionServiceImpl"
+    point="converter">
+    <!-- converter based on ImageMagick converter command line -->
+ 
+    <converter name="modifyCheck-withDrawText"
+      class="org.nuxeo.ecm.platform.convert.plugins.CommandLineConverter">
+      <parameters>
+        <parameter name="CommandLineName">IM-modifyCheck-withDrawText</parameter>
+      </parameters>
+    </converter>
+    
+    <converter name="modifyCheck-nameAndOthers"
+      class="org.nuxeo.ecm.platform.convert.plugins.CommandLineConverter">
+      <parameters>
+        <parameter name="CommandLineName">IM-modifyCheck-nameAndOthers</parameter>
+      </parameters>
+    </converter>
+    
+  </extension>
+  
+  <extension
+    target="org.nuxeo.ecm.platform.commandline.executor.service.CommandLineExecutorComponent"
+    point="command">
+    
+    <command name="IM-modifyCheck-withDrawText" enabled="true">
+      <commandLine>convert</commandLine>
+      <parameterString>#{sourceFilePath} -gravity NorthEast -fill black  -pointsize 16 -draw #{textValue} #{targetFilePath}
+      </parameterString>
+      <installationDirective>You need to install ImageMagick.</installationDirective>
+     </command>
+    
+    <command name="IM-modifyCheck-nameAndOthers" enabled="true">
+      <commandLine>convert</commandLine>
+      <parameterString>#{sourceFilePath} -gravity SouthWest -fill black -pointsize 12 -annotate 0x0+20+20 #{textValue} #{targetFilePath}
+      </parameterString>
+      <installationDirective>You need to install ImageMagick.</installationDirective>
+     </command>
+
+  </extension>
+</component>
+

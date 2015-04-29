@@ -25,12 +25,12 @@
     </copy>
 
     <artifact:nuxeo-expand includeTestScope="false"
-                           groupPrefixes="org.nuxeo.pensco" />
+                           groupPrefixes="org.pensco" />
 
     <copy todir="${marketplace}/install/bundles" overwrite="true">
       <artifact:set>
         <includes>
-          <artifact groupId="org.nuxeo.pensco" scope="!test" type="!pom" />
+          <artifact groupId="pensco-utils" scope="!test" type="!pom" />
         </includes>
       </artifact:set>
     </copy>
