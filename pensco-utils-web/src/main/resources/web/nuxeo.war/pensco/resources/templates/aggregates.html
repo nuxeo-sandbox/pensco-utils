@@ -1,0 +1,41 @@
+<script id="aggregatesTemplate" type="x-tmpl-mustache">
+	{{#aggregations}}{{#type}}
+	<h5 class="ui header">Document Type</h5>
+	{{#buckets}}
+	<div class="ui checkbox">
+		<input id={{key}} type="checkbox"/>
+		<label for="{{key}}">{{key}} ({{doc_count}})</label>
+	</div>
+	{{/buckets}}
+	{{/type}}{{/aggregations}}
+
+	{{#aggregations}}{{#mime}}
+	<h5 class="ui header">File Type</h5>
+	{{#buckets}}
+	<div class="ui checkbox">
+		<input id={{key}} type="checkbox"/>
+		<label for="{{key}}">{{key}} ({{doc_count}})</label>
+	</div>
+	{{/buckets}}
+	{{/mime}}{{/aggregations}}
+
+	{{#aggregations}}{{#size}}
+	<h5 class="ui header">File Size</h5>
+	{{#buckets}}
+	<div class="ui checkbox">
+		<input id={{key}} type="checkbox"/>
+		<label for="{{key}}">{{label}} ({{doc_count}})</label>
+	</div>
+	{{/buckets}}
+	{{/size}}{{/aggregations}}
+
+	{{#aggregations}}{{#modified}}
+	<h5 class="ui header">Last Modified</h5>
+	{{#buckets}}
+	<div class="ui checkbox">
+		<input id={{key}} type="checkbox"/>
+		<label for="{{key}}">{{label}} ({{doc_count}})</label>
+	</div>
+	{{/buckets}}
+	{{/modified}}{{/aggregations}}
+</script>

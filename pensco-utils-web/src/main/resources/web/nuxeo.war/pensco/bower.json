@@ -1,0 +1,29 @@
+{
+  "name": "nuxeo-pensco-demo",
+  "version": "0.0.0",
+  "authors": [
+    "Michaël Vachette <mvachette@nuxeo.com>"
+  ],
+  "description": "A very simple demonstrator",
+  "keywords": [
+    "nuxeo"
+  ],
+  "license": "LGPL 2.1",
+  "homepage": "www.nuxeo.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery-Mustache": "~0.2.7",
+    "nuxeo": "~0.4.1",
+    "jquery": "~2.1.3",
+    "semantic-ui": "~1.11.6",
+    "mustache": "~2.0.0",
+    "datetimepicker": "~2.4.3"
+  }
+}

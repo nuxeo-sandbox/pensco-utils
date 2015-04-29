@@ -1,0 +1,11 @@
+<component name="org.nuxeo.presales.pensco.web.auth">
+    <extension
+            target="org.nuxeo.ecm.platform.ui.web.auth.service.PluggableAuthenticationService"
+            point="startURL">
+        <startURLPattern>
+            <patterns>
+                <pattern>pensco/</pattern>
+            </patterns>
+        </startURLPattern>
+    </extension>
+</component>

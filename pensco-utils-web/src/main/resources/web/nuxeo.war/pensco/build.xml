@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<project name="Bower install" default="build" basedir="../../build">
+
+    <!-- set executable names based on OS family -->
+    <condition property="cmd.bower" value="bower.cmd" else="bower">
+        <os family="windows"/>
+    </condition>
+
+    <target name="init" description="Download all web dependencies">
+        <exec executable="${cmd.bower}" failonerror="true">
+            <arg value="install" />
+        </exec>
+    </target>
+
+    <target name="build" depends="init" />
+
+</project>

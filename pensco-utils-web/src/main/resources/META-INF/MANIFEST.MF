@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-Vendor: Nuxeo
+Bundle-Version: 1.0.0
+Bundle-Name: pensco-utils-web
+Bundle-ManifestVersion: 1
+Bundle-SymbolicName: pensco-utils-web
+Nuxeo-Component: OSGI-INF/extensions/authentication-contrib.xml

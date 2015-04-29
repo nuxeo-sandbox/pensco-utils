@@ -16,6 +16,10 @@
       <groupId>pensco-utils</groupId>
       <artifactId>pensco-utils-plugin</artifactId>
     </dependency>
+    <dependency>
+      <groupId>pensco-utils</groupId>
+      <artifactId>pensco-utils-web</artifactId>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

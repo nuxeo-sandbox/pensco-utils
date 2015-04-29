@@ -1,0 +1,18 @@
+<script id="resultsTemplate" type="x-tmpl-mustache">
+	{{#hits}}
+	<div class="item">
+		<a class="header">{{#_source}}{{dc:title}}{{/_source}}</a>
+		<div class="description">
+			<p align="justify">
+				{{#highlight}}
+					{{#ecm:binarytext}}
+						{{{ecm:binarytext}}}
+					{{/ecm:binarytext}}
+					{{^ecm:binarytext}}
+						No Text Extract
+					{{/ecm:binarytext}}
+				{{/highlight}}</p>
+		</div>
+	</div>
+	{{/hits}}
+</script>

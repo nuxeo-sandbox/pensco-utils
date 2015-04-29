@@ -15,6 +15,7 @@
   <description/>
   <modules>
     <module>pensco-utils</module>
+    <module>pensco-utils-web</module>
     <module>pensco-utils-mp</module>
   </modules>
   <properties>
@@ -25,6 +26,11 @@
     <dependency>
       <groupId>pensco-utils</groupId>
       <artifactId>pensco-utils-plugin</artifactId>
+      <version>${pensco.utils.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>pensco-utils</groupId>
+      <artifactId>pensco-utils-web</artifactId>
       <version>${pensco.utils.version}</version>
     </dependency>
     <dependency>

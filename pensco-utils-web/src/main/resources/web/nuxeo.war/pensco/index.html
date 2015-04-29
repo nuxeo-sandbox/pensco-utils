@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Statements Export</title>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="bower_components/semantic-ui/dist/semantic.min.css">
+    <script src="bower_components/semantic-ui/dist/semantic.min.js"></script>
+    <script src="bower_components/nuxeo/lib/jquery/nuxeo.js"></script>
+    <script src="bower_components/mustache/mustache.min.js"></script>
+    <script src="bower_components/jquery-Mustache/jquery.mustache.js"></script>
+    <script src="resources/javascript/demo.js"></script>
+    <link rel="stylesheet" type="text/css" href="resources/css/style.css">
+	<link rel="stylesheet" type="text/css" href="bower_components/datetimepicker/jquery.datetimepicker.css">
+	<script src="bower_components/datetimepicker/jquery.datetimepicker.js"></script>
+</head>
+<body>
+<header class="header">
+    <img src="resources/img/logo340x60.png" height="35" width="210">
+</header>
+
+<div class="ui two column centered grid" id="mainForm">
+    <div class="column">
+	<div id="inputForm" class="ui form segment">
+		<div class="required field">
+		  <label>Customer Name</label>
+		  <input placeholder="Name" name="name" type="text">
+		</div>
+		<div class="two fields">
+		   <div class="field">
+		     <label>From</label>
+		     <input id="fromDate" name="startDate" placeholder="From" type="date">
+		   </div>
+		   <div class="field">
+		     <label>To</label>
+		     <input id="toDate" name="endDate" placeholder="To" type="date">
+		   </div>
+		</div>
+		<div id="submitButton" class="ui green submit button">Submit</div>
+	</div>
+	</div>
+</div>
+</body>
+</html>
