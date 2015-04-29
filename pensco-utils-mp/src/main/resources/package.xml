@@ -13,7 +13,7 @@
   <production-state>development</production-state>
   <supported>false</supported>
   <platforms>
-    <platform>cap-@VERSION@</platform>
+    <platform>cap-7.2</platform>
     <platform>cap-7.3</platform>
   </platforms>
 <!-- 
