@@ -183,7 +183,7 @@ public class CreateAccountsFromOthersOp {
     protected void createAccountIfNeededAndUpdateDoc(String inName, DocumentModel inDoc) {
         
         DocumentModel account;
-        DocumentModelList docs = session.query("SELECT * FROM Account WHERE account:customer_name = '" + inName + "'  AND ecm:isVersion = 0 AND ecm:isProxy = 0");
+        DocumentModelList docs = session.query("SELECT * FROM Account WHERE account:customer_name = \"" + inName + "\"  AND ecm:isVersion = 0 AND ecm:isProxy = 0");
         if(docs.size() == 0) {
             account = createAccount(inName);
         } else {
