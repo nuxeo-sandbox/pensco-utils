@@ -86,13 +86,11 @@ public class CreateChecksOp {
             "Morgan Stanley" };
 
     public static final int BANKS_MAX = BANKS.length - 1;
-    
-    public static final String[] SPECIAL_CUSTOMERS = {"JOHN SMITH", "JOHN SMITH",
-                                    "SUSAN JOHNSON", "SUSAN JOHNSON", "SUSAN JOHNSON",
-                                    "DAVID JONES", "DAVID JONES",
-                                    "LISA WILLIAMS",
-                                    "WILLIAM MOORE"};
-    
+
+    public static final String[] SPECIAL_CUSTOMERS = { "JOHN SMITH",
+            "JOHN SMITH", "SUSAN JOHNSON", "SUSAN JOHNSON", "SUSAN JOHNSON",
+            "DAVID JONES", "DAVID JONES", "LISA WILLIAMS", "WILLIAM MOORE" };
+
     public static final int SPECIAL_CUSTOMERS_MAX = SPECIAL_CUSTOMERS.length - 1;
 
     protected static final String[] MODIF_USERS = { "john", "john", "john",
@@ -109,7 +107,6 @@ public class CreateChecksOp {
     protected Calendar today = Calendar.getInstance();
 
     protected String parentPath;
-    
 
     // To avoid allocating an array for each document created
     protected String[] contributors = { "" };
@@ -129,10 +126,17 @@ public class CreateChecksOp {
     @Param(name = "deletePrevious", required = false, values = { "true" })
     protected boolean deletePrevious = true;
 
+    @Param(name = "howMany", required = false, values = { "2000" })
+    protected long howMany = HOW_MANY;
+
     @OperationMethod
     public void run() throws IOException {
 
         log.warn("Creating checks...");
+
+        if (howMany < 1) {
+            throw new RuntimeException("Less than 1 check, really?");
+        }
 
         parentPath = checksFolderDoc.getPathAsString();
 
@@ -140,7 +144,8 @@ public class CreateChecksOp {
         TransactionHelper.startTransaction();
 
         if (deletePrevious) {
-            deletePreviousChecks();
+            log.warn("Deleting previous checks...");
+            MiscUtils.deleteWithQuery(session, "SELECT * FROM Document WHERE ac:kind = 'Check'", "checks");
         }
 
         firstLastNames = RandomFirstLastNames.getInstance();
@@ -155,12 +160,12 @@ public class CreateChecksOp {
         }
         int maxBases = bases.size() - 1;
 
-        for (int i = 1; i <= HOW_MANY; ++i) {
+        for (int i = 1; i <= howMany; ++i) {
 
             createOneCheck(bases.get(ToolsMisc.randomInt(0, maxBases)));
 
             if ((i % MODULO_FOR_COMMIT) == 0) {
-                log.warn("Created: " + i + "/" + HOW_MANY);
+                log.warn("Created: " + i + "/" + howMany);
                 TransactionHelper.commitOrRollbackTransaction();
                 TransactionHelper.startTransaction();
             }
@@ -170,6 +175,8 @@ public class CreateChecksOp {
         TransactionHelper.startTransaction();
 
         log.warn("Creating checks: Done");
+        
+        RandomFirstLastNames.release();
 
     }
 
@@ -177,7 +184,7 @@ public class CreateChecksOp {
 
         DocumentModel doc = null;
 
-        String checkNumber = getSomeUID(15);
+        String checkNumber = MiscUtils.getSomeUID(15);
 
         doc = session.createDocumentModel(parentPath, checkNumber, "Picture");
 
@@ -191,33 +198,36 @@ public class CreateChecksOp {
         doc.setPropertyValue("dc:lastContributor", user);
         contributors[0] = user;
         doc.setPropertyValue("dc:contributors", contributors);
-        
+
         doc.setPropertyValue("ac:kind", "Check");
-        
+
         String customer;
-        if(ToolsMisc.randomInt(1, 10) > 9) {
-            customer = SPECIAL_CUSTOMERS[ToolsMisc.randomInt(0, SPECIAL_CUSTOMERS_MAX)];
+        if (ToolsMisc.randomInt(1, 10) > 9) {
+            customer = SPECIAL_CUSTOMERS[ToolsMisc.randomInt(0,
+                    SPECIAL_CUSTOMERS_MAX)];
         } else {
-            customer = firstLastNames.getAFirstName() + " " + firstLastNames.getALastName();
+            customer = firstLastNames.getAFirstName() + " "
+                    + firstLastNames.getALastName();
         }
         doc.setPropertyValue("ac:customer_name", customer);
 
-        doc.setPropertyValue("ac:deal_id", getSomeUID(6));
-        
+        doc.setPropertyValue("ac:deal_id", MiscUtils.getSomeUID(6));
+
         // Setup the check
-        String amountStr = "" + ToolsMisc.randomInt(1000, 5000) + "." + ToolsMisc.randomInt(0, 99);
+        String amountStr = "" + ToolsMisc.randomInt(1000, 5000) + "."
+                + ToolsMisc.randomInt(0, 99);
         double amount = Double.valueOf(amountStr);
         String bank = BANKS[ToolsMisc.randomInt(0, BANKS_MAX)];
         String creationDateStr = yyyyMMdd.format(created.getTime());
-        
+
         doc.setPropertyValue("ac:check_amount", amount);
         doc.setPropertyValue("ac:check_bank", bank);
         doc.setPropertyValue("ac:check_date", created);
         doc.setPropertyValue("ac:check_number", checkNumber);
-        
-        Blob checkPict = buildCheckPicture(inBasePict, creationDateStr, amountStr, bank, checkNumber, customer);
+
+        Blob checkPict = buildCheckPicture(inBasePict, creationDateStr,
+                amountStr, bank, checkNumber, customer);
         doc.setPropertyValue("file:content", (Serializable) checkPict);
-        
 
         doc.putContextData(DublinCoreListener.DISABLE_DUBLINCORE_LISTENER, true);
         doc = session.createDocument(doc);// Disable dublincore
@@ -225,107 +235,75 @@ public class CreateChecksOp {
         doc = session.saveDocument(doc);
 
     }
-    
-    protected String getSomeUID(int size) {
-        
-        return UUID.randomUUID().toString().replace("-", "").toUpperCase().substring(1, size);
-    }
-    
-    protected Blob buildCheckPicture(File inBase, String inDate, String inAmount, String inBank, String inNumber, String inCustomer) {
-        
+
+    protected Blob buildCheckPicture(File inBase, String inDate,
+            String inAmount, String inBank, String inNumber, String inCustomer) {
+
         Blob result = null;
         BlobHolder holder;
-        
+
         String fileName = inBase.getName();
         int pos = fileName.lastIndexOf('.');
         String ext = fileName.substring(pos + 1);
-        
+
         fileName = inNumber + "." + ext;
-        
+
         Map<String, Serializable> params = new HashMap<>();
-        
+
         FileBlob fb = new FileBlob(inBase);
         String mimeType = fb.getMimeType();
-        
+
         // Date
         params.put("textValue", "text 130,45 '" + inDate + "'");
         params.put("targetFileName", fileName);
-        holder = conversionService.convert(CONVERTER_WITH_DRAW_TEXT, new SimpleBlobHolder(fb), params);
+        holder = conversionService.convert(CONVERTER_WITH_DRAW_TEXT,
+                new SimpleBlobHolder(fb), params);
         result = holder.getBlob();
         result.setFilename(fileName);
         result.setMimeType(mimeType);
-        
+
         // Amount
         params.clear();
         params.put("textValue", "text 60,100 '" + inAmount + "'");
         params.put("targetFileName", fileName);
-        holder = conversionService.convert(CONVERTER_WITH_DRAW_TEXT, new SimpleBlobHolder(result), params);
+        holder = conversionService.convert(CONVERTER_WITH_DRAW_TEXT,
+                new SimpleBlobHolder(result), params);
         result = holder.getBlob();
         result.setFilename(fileName);
         result.setMimeType(mimeType);
-        
+
         // Bank
         params.clear();
         params.put("textValue", "text 445,180 '" + inBank + "'");
         params.put("targetFileName", fileName);
-        holder = conversionService.convert(CONVERTER_WITH_DRAW_TEXT, new SimpleBlobHolder(result), params);
+        holder = conversionService.convert(CONVERTER_WITH_DRAW_TEXT,
+                new SimpleBlobHolder(result), params);
         result = holder.getBlob();
         result.setFilename(fileName);
         result.setMimeType(mimeType);
-        
+
         // Order
         params.clear();
         params.put("textValue", "text 380,100 'PENSCO'");
         params.put("targetFileName", fileName);
-        holder = conversionService.convert(CONVERTER_WITH_DRAW_TEXT, new SimpleBlobHolder(result), params);
+        holder = conversionService.convert(CONVERTER_WITH_DRAW_TEXT,
+                new SimpleBlobHolder(result), params);
         result = holder.getBlob();
         result.setFilename(fileName);
         result.setMimeType(mimeType);
-        
+
         // Customer name, checknumber, ...
         params.clear();
-        params.put("textValue", inCustomer + "\\n\\n" + inNumber + " • " + getSomeUID(10));
+        params.put("textValue", inCustomer + "\\n\\n" + inNumber + " • "
+                + MiscUtils.getSomeUID(10));
         params.put("targetFileName", fileName);
-        holder = conversionService.convert(CONVERTER_NAME_AND_OTHERS, new SimpleBlobHolder(result), params);
+        holder = conversionService.convert(CONVERTER_NAME_AND_OTHERS,
+                new SimpleBlobHolder(result), params);
         result = holder.getBlob();
         result.setFilename(fileName);
         result.setMimeType(mimeType);
-        
+
         return result;
-    }
-    
-    protected void deletePreviousChecks() {
-
-        log.warn("Creating checks: Deleting existing Checks");
-
-        String nxql = "SELECT * FROM Document WHERE ac:kind = 'Check'";
-        int size;
-        do {
-            DocumentModelList docs = session.query(nxql);
-            size = docs.size();
-            if (size > 0) {
-
-                log.warn("Deleting " + size + " 'Checks'...");
-                deleteTheseDocs(docs);
-            }
-
-        } while (size > 0);
-        
-    }
-
-    protected void deleteTheseDocs(DocumentModelList inDocs) {
-
-        int size = inDocs.size();
-        if (size > 0) {
-            DocumentRef[] docRefs = new DocumentRef[size];
-            for (int i = 0; i < size; i++) {
-                docRefs[i] = inDocs.get(i).getRef();
-            }
-            session.removeDocuments(docRefs);
-            TransactionHelper.commitOrRollbackTransaction();
-            TransactionHelper.startTransaction();            
-        }
-
     }
 
 }
