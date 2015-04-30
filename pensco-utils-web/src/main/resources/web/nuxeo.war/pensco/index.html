@@ -18,29 +18,42 @@
 </head>
 <body>
 <header class="header">
-    <img src="resources/img/logo340x60.png" height="35" width="210">
+    <img src="resources/img/pensco-logo-head.png" height="35" width="210">
 </header>
 
 <div class="ui two column centered grid" id="mainForm">
     <div class="column">
-	<div id="inputForm" class="ui form segment">
-		<div class="required field">
-		  <label>Customer Name</label>
-		  <input placeholder="Name" name="name" type="text">
+		<h1>Statement Export</h1>
+		<div id="inputForm" class="ui form segment">
+			<div class="required field">
+			  <label>Customer Name</label>
+			  <input placeholder="Name" name="name" type="text">
+			</div>
+			<div class="two fields">
+			   <div class="field">
+				 <label>From</label>
+				 <input id="fromDate" name="startDate" placeholder="From" type="date">
+			   </div>
+			   <div class="field">
+				 <label>To</label>
+				 <input id="toDate" name="endDate" placeholder="To" type="date">
+			   </div>
+			</div>
+			<div id="submitButton" class="ui green submit button">Submit</div>
+			<div id="clearButton" class="ui clear button">Clear</div>
 		</div>
-		<div class="two fields">
-		   <div class="field">
-		     <label>From</label>
-		     <input id="fromDate" name="startDate" placeholder="From" type="date">
-		   </div>
-		   <div class="field">
-		     <label>To</label>
-		     <input id="toDate" name="endDate" placeholder="To" type="date">
-		   </div>
-		</div>
-		<div id="submitButton" class="ui green submit button">Submit</div>
-	</div>
 	</div>
 </div>
+
+<div id="modalError" class="ui small modal">
+	<i class="close icon"></i>
+	<div class="header">
+		Message
+	</div>
+	<div class="content">
+		<p id="errorValue"></p>
+	</div>
+</div>
+
 </body>
 </html>

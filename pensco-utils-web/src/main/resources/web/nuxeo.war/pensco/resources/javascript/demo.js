@@ -4,7 +4,14 @@ var API = (function(API) {
 
 	API.config = function () {
 	  //Instantiate Nuxeo Client
-	  nuxeoClient = new nuxeo.Client({timeout: 3000});
+	  nuxeoClient = new nuxeo.Client({
+	  	baseURL: 'http://192.168.56.101:8080/nuxeo',
+	  	auth: {
+	  		method: 'basic',
+	  		username: "Administrator",
+	  		password: "Administrator" },
+	  	timeout: 3000}
+	  );
 	  // Client schema and timeout configuration
 	  nuxeoClient.schema("*");
 	};
@@ -14,11 +21,15 @@ var API = (function(API) {
 		operation('API-GenerateMergedCustomerStatements').
 		params(data).
 		execute(callbackGeneratePDF);
+	  $("#inputForm").attr("class", "ui loading form segment");
 	};
 
 	////////////////////////////// CALLBACK FUNCTIONS
 
 	function callbackGeneratePDF(error, result) {
+
+	  $("#inputForm").attr("class", "ui form segment");
+
 	  if (error) {
 		throwError("Cannot run generate pdf -> " + error);
 		throw error;
@@ -52,13 +63,17 @@ $(document).ready(function () {
 		API.search(data);
 	});
 
+	$('#clearButton').click(function () {
+		$('#inputForm').form('clear')
+	});
+
 	API.config();
 });
 
 
 // Show modal for error
 function throwError(error) {
-  $('#errorValue').append(error);
+  $('#errorValue').append('No Statement found');
   $('#modalError').modal('show');
 };
 
