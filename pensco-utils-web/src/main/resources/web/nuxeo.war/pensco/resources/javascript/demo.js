@@ -5,11 +5,6 @@ var API = (function(API) {
 	API.config = function () {
 	  //Instantiate Nuxeo Client
 	  nuxeoClient = new nuxeo.Client({
-	  	baseURL: 'http://192.168.56.101:8080/nuxeo',
-	  	auth: {
-	  		method: 'basic',
-	  		username: "Administrator",
-	  		password: "Administrator" },
 	  	timeout: 3000}
 	  );
 	  // Client schema and timeout configuration
