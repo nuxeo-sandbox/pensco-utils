@@ -98,8 +98,6 @@ public class CreateStatementsOp {
 
     protected ArrayList<String> customerNames;
 
-    protected int customerNamesMax;
-
     protected int countCreated;
 
     protected int statementLines;
@@ -374,8 +372,6 @@ public class CreateStatementsOp {
                 customerNames.add(specialCust);
             }
         }
-
-        customerNamesMax = customerNames.size() - 1;
 
     }
 

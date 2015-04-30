@@ -3,6 +3,8 @@
   <extension target="org.nuxeo.ecm.core.operation.OperationServiceComponent"
     point="operations" >
       <operation class="org.pensco.CreateChecksOp" />
+      <operation class="org.pensco.CreateStatementsOp" />
+      <operation class="org.pensco.CreateAccountsFromOthersOp" />
    </extension>
     
 </component>
