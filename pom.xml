@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.nuxeo</groupId>
     <artifactId>nuxeo-addons-parent</artifactId>
-    <version>7.2</version>
+    <version>7.10-SNAPSHOT</version>
   </parent>
   <groupId>pensco-utils</groupId>
   <artifactId>pensco-utils-parent</artifactId>
