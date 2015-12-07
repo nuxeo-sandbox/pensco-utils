@@ -6,6 +6,7 @@
       <operation class="org.pensco.CreateStatementsOp" />
       <operation class="org.pensco.CreateAccountsFromOthersOp" />
       <operation class="org.pensco.AccountHandlerOp" />
+      <operation class="org.pensco.UpdateDemoDataOp" />
    </extension>
     
 </component>

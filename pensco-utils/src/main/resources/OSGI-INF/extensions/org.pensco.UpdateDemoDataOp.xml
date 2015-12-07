@@ -1,8 +1,0 @@
-<component name="org.pensco.UpdateDemoDataOp">
-
-  <extension target="org.nuxeo.ecm.core.operation.OperationServiceComponent"
-    point="operations" >
-      <operation class="org.pensco.UpdateDemoDataOp" />
-   </extension>
-    
-</component>
