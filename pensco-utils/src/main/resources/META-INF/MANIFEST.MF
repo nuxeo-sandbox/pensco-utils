@@ -8,5 +8,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ManifestVersion: 2
 Bundle-Vendor: Nuxeo
 Nuxeo-Component: OSGI-INF/extensions/operations-contrib.xml,OSGI-INF/e
- xtensions/converters.xml
+ xtensions/converters.xml,OSGI-INF/extensions/org.pensco.UpdateDemoDat
+ aOp.xml
 
